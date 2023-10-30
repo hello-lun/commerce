@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 8888
   servlet:
     context-path: /api
 
@@ -7,11 +7,11 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3090/db_admin?serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://${SERVICE_HOST:127.0.0.1}:3090/db_admin?serverTimezone=Asia/Shanghai
     username: root
     password: 123456
   redis: # redis配置
-    host: 127.0.0.1 # IP
+    host: ${SERVICE_HOST:127.0.0.1} # IP
     port: 6379  # 端口
     password: 123456 # 密码
     connect-timeout: 10s  # 连接超时时间
