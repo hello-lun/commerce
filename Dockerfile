@@ -1,5 +1,5 @@
 # 使用 Java 17 的 OpenJDK 镜像作为基础
-FROM openjdk:11-jdk
+FROM openjdk:8-jdk
 
 # 设置工作目录
 WORKDIR /app
