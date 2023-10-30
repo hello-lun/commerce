@@ -1,0 +1,44 @@
+name: Deploy to EC2
+on:
+  push:
+    branches:
+      - master  # adjust this to your main branch if it's named differently
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: 'maven'
+
+      - name: Build with Maven
+        run: |
+          mvn clean package
+
+      - name: Copy files to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.AMAZON_EC2_HOST }}
+          username: ${{ secrets.AMAZON_EC2_NAME }}
+          key: ${{ secrets.AMAZON_SECRET_KEY }}
+          source: 'target/commerce.jar'
+          target: '/home/ec2-user/app/backend'
+
+      - name: shell EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AMAZON_EC2_HOST }}
+          username: ${{ secrets.AMAZON_EC2_NAME }}
+          key: ${{ secrets.AMAZON_SECRET_KEY }}
+          script: |
+            cd /home/ec2-user/app
+            export SERVICE_HOST=${{ vars.SERVICE_HOST }}
+            docker-compose up --no-deps --build -d java_app

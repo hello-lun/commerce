@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.commerce.mapper.GoodsOrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.commerce.entity.GoodsOrder">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="discount" column="discount" jdbcType="DOUBLE"/>
+            <result property="total" column="total" jdbcType="DOUBLE"/>
+            <result property="milkorderlist" column="milkOrderList" jdbcType="VARCHAR"/>
+            <result property="cost" column="cost" jdbcType="DOUBLE"/>
+            <result property="profit" column="profit" jdbcType="DOUBLE"/>
+            <result property="date" column="date" jdbcType="DATE"/>
+            <result property="extraorderlist" column="extraOrderList" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,discount,total,
+        milkOrderList,cost,profit,
+        date,extraOrderList
+    </sql>
+</mapper>

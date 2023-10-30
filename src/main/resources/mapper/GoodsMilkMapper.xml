@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.commerce.mapper.GoodsMilkMapper">
+
+    <resultMap id="BaseResultMap" type="com.commerce.entity.GoodsMilk">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="milk" column="milk" jdbcType="CHAR"/>
+            <result property="stage" column="stage" jdbcType="INTEGER"/>
+            <result property="realprice" column="realPrice" jdbcType="DOUBLE"/>
+            <result property="saleprice" column="salePrice" jdbcType="DOUBLE"/>
+            <result property="courierfee" column="courierFee" jdbcType="DOUBLE"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,milk,stage,
+        realPrice,salePrice,courierFee
+    </sql>
+</mapper>
