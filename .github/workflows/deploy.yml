@@ -29,7 +29,7 @@ jobs:
           host: ${{ secrets.AMAZON_EC2_HOST }}
           username: ${{ secrets.AMAZON_EC2_NAME }}
           key: ${{ secrets.AMAZON_SECRET_KEY }}
-          source: 'target/commerce.jar'
+          source: 'target/commerce.jar, Dockerfile'
           target: '/home/ec2-user/app/backend'
 
       - name: shell EC2
