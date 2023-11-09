@@ -1,5 +1,6 @@
 package com.commerce.common.security;
 
+import com.commerce.common.constant.Constant;
 import com.commerce.common.constant.JwtConstant;
 import com.commerce.entity.CheckResult;
 import com.commerce.entity.SysUser;
@@ -13,6 +14,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -35,10 +38,16 @@ public class JwtAuthenticationFilter  extends BasicAuthenticationFilter {
     @Autowired
     private SysUserService sysUserService;
 
-    // 请求白名单
-    private static final String URL_WHITELIST[]={
-            "/api/captcha"
-    };
+    private static final PathMatcher pathMatcher = new AntPathMatcher();
+
+    private boolean isWhitelisted(String requestURI) {
+        for (String pattern : Constant.URL_WHITELIST) {
+            if (pathMatcher.match("/api" + pattern, requestURI)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
@@ -48,7 +57,7 @@ public class JwtAuthenticationFilter  extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String token = request.getHeader("token");
         System.out.println("request.getRequestURI()"+request.getRequestURI());
-        if(StringUtil.isEmpty(token) || new ArrayList<String>(Arrays.asList(URL_WHITELIST)).contains(request.getRequestURI())){
+        if(StringUtil.isEmpty(token) || isWhitelisted(request.getRequestURI())){
             chain.doFilter(request,response);
             return;
         }

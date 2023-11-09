@@ -68,8 +68,8 @@
             <option name="tableUIInfoList">
               <list>
                 <TableUIInfo>
-                  <option name="className" value="PdfMark" />
-                  <option name="tableName" value="pdf_mark" />
+                  <option name="className" value="Staff" />
+                  <option name="tableName" value="staff" />
                 </TableUIInfo>
               </list>
             </option>

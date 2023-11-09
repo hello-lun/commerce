@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:mysql://18.234.73.46:3090/db_admin?serverTimezone=Asia/Shanghai
+  redis: # redis配置
+    host: 18.234.73.46 # IP
+
+avatarImagesFilePath: images/

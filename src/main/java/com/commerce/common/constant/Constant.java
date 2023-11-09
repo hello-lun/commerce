@@ -14,4 +14,15 @@ public class Constant {
 
     public final static String DEFAULT_PASSWORD="123456";
 
+    public final static String URL_WHITELIST[]={
+            "/login",
+            "/logout",
+            "/captcha",
+            "/password",
+            "/goods/get",
+            "/goods/category",
+            "/staff/get",
+            "/images/**",
+    };
+
 }

@@ -25,6 +25,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
         httpServletResponse.setContentType("application/json;charset=UTF-8");
+        httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         ServletOutputStream outputStream = httpServletResponse.getOutputStream();
         String message=e.getMessage();
         if(e instanceof BadCredentialsException){

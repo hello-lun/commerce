@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.commerce.mapper.StaffMapper">
+
+    <resultMap id="BaseResultMap" type="com.commerce.entity.Staff">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="CHAR"/>
+            <result property="title" column="title" jdbcType="CHAR"/>
+            <result property="details" column="details" jdbcType="VARCHAR"/>
+            <result property="phone" column="phone" jdbcType="CHAR"/>
+            <result property="wechat" column="wechat" jdbcType="CHAR"/>
+            <result property="whatsapp" column="whatsapp" jdbcType="CHAR"/>
+            <result property="email" column="email" jdbcType="CHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,title,
+        details,phone,wechat,
+        whatsapp,email
+    </sql>
+</mapper>
