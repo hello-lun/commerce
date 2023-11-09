@@ -4,4 +4,4 @@ spring:
   redis: # redis配置
     host: 18.234.73.46 # IP
 
-avatarImagesFilePath: /app/images
+avatarImagesFilePath: /app/images/
