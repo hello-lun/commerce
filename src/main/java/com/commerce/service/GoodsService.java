@@ -13,5 +13,5 @@ import java.util.List;
 * @createDate 2023-11-05 03:20:14
 */
 public interface GoodsService extends IService<Goods> {
-    public IPage<Goods> getGoodsPagation(Page<Goods> page, String category);
+    public IPage<Goods> getGoodsPagation(Page<Goods> page, String category, String brand, String title);
 }

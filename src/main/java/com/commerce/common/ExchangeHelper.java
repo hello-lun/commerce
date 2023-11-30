@@ -55,8 +55,6 @@ public class ExchangeHelper {
                 in.close();
                 String jsonResponse = response.toString();
                 // 使用 Gson 解析 JSON 数据
-                cnyRate = getRatesFromJson(jsonResponse);                // 打印响应数据
-                System.out.println("Response: " + cnyRate);
             } else {
                 System.out.println("GET request failed with response code: " + responseCode);
             }

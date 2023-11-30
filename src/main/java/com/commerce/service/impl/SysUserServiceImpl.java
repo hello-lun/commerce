@@ -80,7 +80,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
                 authority.append(menuCodeStrs);
             }
             redisUtil.set(Constant.AUTHORITY_KEY,String.valueOf(userId),authority,10*60);
-            System.out.println("authority:"+authority.toString());
         }
         return authority.toString();
     }

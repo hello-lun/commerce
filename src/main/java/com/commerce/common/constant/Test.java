@@ -16,9 +16,6 @@ public class Test {
         boolean b1 = set.add("Hello");
         boolean b2 = set.add("Hello");
         boolean b3 = set.add(2018);
-        System.out.println(b1);//true
-        System.out.println(b2);//true
-        System.out.println(b3);//false
     }
 
 }

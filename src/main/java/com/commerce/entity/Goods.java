@@ -38,6 +38,9 @@ public class Goods extends BaseEntity implements Serializable {
     @TableField(value = "category")
     private String category;
 
+    @TableField(value = "brand")
+    private String brand;
+
     /**
      * 
      */

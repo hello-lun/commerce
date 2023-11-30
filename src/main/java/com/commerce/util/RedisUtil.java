@@ -1,11 +1,8 @@
 package com.commerce.util;
 
-
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-
-
 import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.List;

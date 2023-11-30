@@ -57,7 +57,6 @@ public class SysRoleController {
     @PostMapping("/list")
     @PreAuthorize("hasAuthority('system:role:query')")
     public R list(@RequestBody PageBean pageBean){
-        System.out.println("pageBean:"+pageBean);
         String query=pageBean.getQuery().trim();
         Page<SysRole> pageResult = sysRoleService.page(new Page<>(pageBean.getPageNum(),pageBean.getPageSize()), new QueryWrapper<SysRole>().like(StringUtil.isNotEmpty(query), "name", query));
         List<SysRole> roleList = pageResult.getRecords();

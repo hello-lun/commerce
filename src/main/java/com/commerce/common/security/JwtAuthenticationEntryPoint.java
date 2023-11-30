@@ -11,6 +11,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * jwt认证异常处理
@@ -24,9 +26,13 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
         httpServletResponse.setContentType("application/json;charset=UTF-8");
+        // 构建响应内容
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("error", HttpServletResponse.SC_UNAUTHORIZED);
+        responseData.put("message", "认证失败，请登录！");
         ServletOutputStream outputStream = httpServletResponse.getOutputStream();
         httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        outputStream.write(JSONUtil.toJsonStr(R.error(HttpServletResponse.SC_UNAUTHORIZED,"认证失败，请登录！")).getBytes("UTF-8"));
+        outputStream.write(JSONUtil.toJsonStr(responseData).getBytes("UTF-8"));
         outputStream.flush();
         outputStream.close();
     }

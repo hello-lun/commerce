@@ -45,12 +45,33 @@ public class JwtUtils {
     }
 
     /**
+     * 刷新token令牌
+     **/
+    public static String createRefreshToken(Long id, long ttlMillis) {
+        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+        SecretKey secretKey = generalKey();
+        long nowMillis = System.currentTimeMillis();
+        JwtBuilder builder =  Jwts.builder()
+                .setId(id.toString())
+                // 配置刷新令牌参数
+                .setSubject(id.toString()) // 一般使用用户名或用户ID
+                .setIssuedAt(new Date())
+                .signWith(signatureAlgorithm, secretKey);
+        if (ttlMillis >= 0) {
+            long expMillis = nowMillis + ttlMillis;
+            Date expDate = new Date(expMillis);
+            builder.setExpiration(expDate); // 过期时间
+        }
+        return builder.compact();
+    }
+
+    /**
      * 生成jwt token
      * @param username
      * @return
      */
     public static String genJwtToken(String username){
-        return createJWT(username,username,60*60*1000);
+        return createJWT(username,username,60 * 60 * 1000);
     }
 
     /**
@@ -106,12 +127,6 @@ public class JwtUtils {
     public static void main(String[] args) throws InterruptedException {
         //小明失效 10s
         String sc = createJWT("1","小明", 60 * 60 * 1000);
-        System.out.println(sc);
-        System.out.println(validateJWT(sc).getErrCode());
-        System.out.println(validateJWT(sc).getClaims().getId());
-        System.out.println(validateJWT(sc).getClaims().getSubject());
-        //Thread.sleep(3000);
-        System.out.println(validateJWT(sc).getClaims());
         Claims claims = validateJWT(sc).getClaims();
         String sc2 = createJWT(claims.getId(),claims.getSubject(), JwtConstant.JWT_TTL);
         System.out.println(sc2);

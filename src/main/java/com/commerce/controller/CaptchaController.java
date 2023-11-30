@@ -33,13 +33,10 @@ public class CaptchaController {
     @Autowired
     private RedisUtil redisUtil;
 
-    @GetMapping("/api/captcha")
+    @GetMapping("/captcha")
     public R captcha() throws IOException {
         String key= UUID.randomUUID().toString(); // 生成随机唯一key
         String code = producer.createText();
-
-        System.out.println("code="+code);
-
         BufferedImage image = producer.createImage(code);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ImageIO.write(image, "jpg", outputStream);

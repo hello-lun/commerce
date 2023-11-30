@@ -2,6 +2,7 @@ package com.commerce.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.commerce.annotations.RateLimit;
 import com.commerce.entity.Goods;
 import com.commerce.entity.R;
 import com.commerce.mapper.GoodsMapper;
@@ -45,11 +46,13 @@ public class GoodsController {
     @GetMapping("/get")
     public R getGoods(@RequestParam(defaultValue = "1") Integer page,
                       @RequestParam(defaultValue = "10") Integer size,
-                      String category) {
-        IPage<Goods> goods = goodsService.getGoodsPagation(new Page<>(page, size), category);
+                      String category,
+                      String brand,
+                      String title) {
+        IPage<Goods> goods = goodsService.getGoodsPagation(new Page<>(page, size), category, brand, title);
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("list", goods.getRecords());
-        responseMap.put("totle", goods.getTotal());
+        responseMap.put("total", goods.getTotal());
         R r = R.ok();
         r.put("data", responseMap);
         return r;

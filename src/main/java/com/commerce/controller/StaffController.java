@@ -1,5 +1,6 @@
 package com.commerce.controller;
 
+import com.commerce.annotations.RateLimit;
 import com.commerce.entity.Goods;
 import com.commerce.entity.R;
 import com.commerce.mapper.StaffMapper;
@@ -27,6 +28,7 @@ public class StaffController {
     }
 
     @GetMapping("/get")
+//    @RateLimit(limit = 3, timeout = 60)
     public R getStaff() {
         List<Staff> staffList = staffService.list();
         return R.ok(staffList);

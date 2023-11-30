@@ -21,8 +21,13 @@ public class Constant {
             "/password",
             "/goods/get",
             "/goods/category",
-            "/staff/get",
+//            "/staff/get",
+//            "/brand/get",
+//            "/banners/get",
+//            "/category/get",
+            "/refresh-token",
             "/images/**",
+            "/message/email",
     };
 
 }

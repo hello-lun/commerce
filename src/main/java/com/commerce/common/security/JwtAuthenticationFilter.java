@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter  extends BasicAuthenticationFilter {
 
     private boolean isWhitelisted(String requestURI) {
         for (String pattern : Constant.URL_WHITELIST) {
-            if (pathMatcher.match("/api" + pattern, requestURI)) {
+            if (pathMatcher.match("/req" + pattern, requestURI)) {
                 return true;
             }
         }
@@ -56,7 +56,7 @@ public class JwtAuthenticationFilter  extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String token = request.getHeader("token");
-        System.out.println("request.getRequestURI()"+request.getRequestURI());
+        System.out.println("request.getRequestURI()-------------------》》》》》》》》"+request.getRequestURI() + (StringUtil.isEmpty(token) || isWhitelisted(request.getRequestURI())));
         if(StringUtil.isEmpty(token) || isWhitelisted(request.getRequestURI())){
             chain.doFilter(request,response);
             return;
@@ -70,17 +70,11 @@ public class JwtAuthenticationFilter  extends BasicAuthenticationFilter {
             }
         }
 
-
         Claims claims = JwtUtils.parseJWT(token);
         String username = claims.getSubject();
-
         SysUser sysUser = sysUserService.getByUserName(username);
-
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=new UsernamePasswordAuthenticationToken(username,null,myUserDetailService.getUserAuthority(sysUser.getId()));
-
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
         chain.doFilter(request,response);
-
     }
 }

@@ -24,6 +24,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
         httpServletResponse.setContentType("application/json;charset=UTF-8");
+        System.out.println("jwt success出错；" + "---------------------->" + 3333);
         ServletOutputStream outputStream = httpServletResponse.getOutputStream();
         outputStream.write(JSONUtil.toJsonStr(R.error(HttpServletResponse.SC_FORBIDDEN,"权限不足，无法访问！")).getBytes("UTF-8"));
 

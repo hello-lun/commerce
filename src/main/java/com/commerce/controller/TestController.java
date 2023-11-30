@@ -36,7 +36,6 @@ public class TestController {
     @GetMapping("/password")
     public R password(){
         String password = bCryptPasswordEncoder.encode("123456");
-        System.out.println("password:"+password);
         return R.ok();
     }
 

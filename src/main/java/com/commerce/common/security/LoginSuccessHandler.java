@@ -7,9 +7,11 @@ import com.commerce.entity.R;
 import com.commerce.entity.SysMenu;
 import com.commerce.entity.SysRole;
 import com.commerce.entity.SysUser;
+import com.commerce.service.RefreshTokensService;
 import com.commerce.service.SysMenuService;
 import com.commerce.service.SysRoleService;
 import com.commerce.service.SysUserService;
+import com.commerce.service.impl.RefreshTokensServiceImpl;
 import com.commerce.util.JwtUtils;
 import com.commerce.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Autowired
     private SysMenuService sysMenuService;
 
+    @Autowired
+    private RefreshTokensServiceImpl refreshTokensService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
@@ -57,7 +61,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         String token=JwtUtils.genJwtToken(username);
 
         SysUser currentUser = sysUserService.getByUserName(username);
-
+        // 生成refreshToken，并且储存起来
+        String refreshToken = refreshTokensService.savaRefleshToken(token, currentUser.getId());
 
         // 获取当前用户拥有的权限菜单
         // 获取角色
@@ -88,6 +93,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         R res = R.ok("登录成功");
         HashMap<String, Object> map = new HashMap();
         map.put("authorization",token);
+        map.put("refreshToken",refreshToken);
         map.put("menuList",menuList);
         map.put("currentUser",currentUser);
         map.put("perms",perms);

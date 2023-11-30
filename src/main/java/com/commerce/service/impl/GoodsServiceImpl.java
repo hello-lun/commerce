@@ -23,10 +23,16 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods>
 
     @Autowired
     GoodsMapper goodsMapper;
-    public IPage<Goods> getGoodsPagation(Page<Goods> page, String category) {
+    public IPage<Goods> getGoodsPagation(Page<Goods> page, String category, String brand, String title) {
         QueryWrapper<Goods> queryWrapper = new QueryWrapper<>();
         if (category != null && !category.isEmpty()) {
-            queryWrapper.eq("type", category);
+            queryWrapper.eq("category", category);
+        }
+        if (brand != null && !brand.isEmpty()) {
+            queryWrapper.eq("brand", brand);
+        }
+        if (title != null && !title.isEmpty()) {
+            queryWrapper.like("title", title);
         }
         return goodsMapper.selectPage(page, queryWrapper);
     }

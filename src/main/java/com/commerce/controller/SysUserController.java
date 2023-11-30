@@ -80,7 +80,6 @@ public class SysUserController {
     @PostMapping("/list")
     @PreAuthorize("hasAuthority('system:user:query')")
     public R list(@RequestBody PageBean pageBean){
-        System.out.println("pageBean:"+pageBean);
         String query=pageBean.getQuery().trim();
         Page<SysUser> pageResult = sysUserService.page(new Page<>(pageBean.getPageNum(),pageBean.getPageSize()), new QueryWrapper<SysUser>().like(StringUtil.isNotEmpty(query), "username", query));
         List<SysUser> userList = pageResult.getRecords();

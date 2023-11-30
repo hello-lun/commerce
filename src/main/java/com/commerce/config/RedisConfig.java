@@ -9,6 +9,7 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettucePoolingClientConfiguration;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -27,8 +28,6 @@ import java.time.Duration;
  */
 @Configuration
 public class RedisConfig {
-
-
 	@Value("${spring.redis.host}")
 	private String host;
 	@Value("${spring.redis.port}")
@@ -69,6 +68,14 @@ public class RedisConfig {
 		return new LettuceConnectionFactory(redisConfig, lettucePoolingClientConfiguration);
 	}
 
+	@Bean
+	public RedisTemplate<String, Integer> redisTemplateForIntegers(LettuceConnectionFactory lettuceConnectionFactory) {
+		RedisTemplate<String, Integer> template = new RedisTemplate<>();
+		template.setConnectionFactory(lettuceConnectionFactory);
+		template.setKeySerializer(new StringRedisSerializer());
+		template.setValueSerializer(new GenericToStringSerializer<>(Integer.class));
+		return template;
+	}
 
 	@Bean(name="redisTemplate")
 	public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory lettuceConnectionFactory) {
