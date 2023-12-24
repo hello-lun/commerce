@@ -26,7 +26,7 @@ public class RefleshTokenController {
         }
 
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST) // 设置状态码为400
+                .status(HttpStatus.GONE) // 设置状态码为400
                 .body(R.error(400, "refreshToken验证失败！"));
     }
 

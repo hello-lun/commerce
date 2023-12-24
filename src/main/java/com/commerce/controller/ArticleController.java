@@ -1,22 +1,31 @@
 package com.commerce.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.commerce.dto.ArticalQueryDto;
 import com.commerce.entity.Articals;
 import com.commerce.entity.PdfMark;
 import com.commerce.entity.R;
+import com.commerce.entity.UserWordRecords;
 import com.commerce.mapper.ArticalsMapper;
 import com.commerce.mapper.PdfMarkMapper;
+import com.commerce.mapper.UserWordRecordsMapper;
 import com.commerce.service.impl.ArticalsServiceImpl;
 import com.commerce.service.impl.PdfMarkServiceImpl;
+import com.commerce.service.impl.UserWordRecordsServiceImpl;
 import com.google.gson.Gson;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +35,12 @@ import java.util.Map;
 public class ArticleController {
     @Autowired
     ArticalsMapper articalsMapper;
+
+    @Autowired
+    UserWordRecordsServiceImpl userWordRecordsService;
+
+    @Autowired
+    UserWordRecordsMapper userWordRecordsMapper;
 
     @Autowired
     PdfMarkServiceImpl pdfMarkService;
@@ -121,20 +136,51 @@ public class ArticleController {
 
 
     @GetMapping("/getArtical")
-    public R getArticalData(@RequestParam String type) {
+    public R getArticalData(@RequestParam String type, @RequestParam Long userId) {
         QueryWrapper<Articals> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("type", type);  // 设置 type 字段的查询条件
-        R responseResult = R.ok(articalsMapper.selectList(queryWrapper));
+        List<Articals> articals = articalsMapper.selectList(queryWrapper);
+        QueryWrapper<UserWordRecords> wordQueryWrapper = new QueryWrapper<>();
+        wordQueryWrapper.eq("user_id", userId);
+        List<UserWordRecords> userRecords = userWordRecordsMapper.selectList(wordQueryWrapper);
+        List<ArticalQueryDto> tempArticals = new ArrayList<>();
+        for (Articals artical : articals) {
+            ArticalQueryDto articalWithUserDTO = new ArticalQueryDto();
+            BeanUtils.copyProperties(artical, articalWithUserDTO);  // 将 Articals 的属性拷贝到 DTO 中
+            articalWithUserDTO.setWords("");
+            for (UserWordRecords userWordRecord : userRecords) {
+                if (userWordRecord.getArticalId().equals(artical.getId())) {
+                    articalWithUserDTO.setArticalId(artical.getId());
+                    articalWithUserDTO.setUserWordRecordsId(userWordRecord.getId());
+                    articalWithUserDTO.setWords(userWordRecord.getWords());
+                    break;
+                }
+            }
+            tempArticals.add(articalWithUserDTO);
+        }
+
+        R responseResult = R.ok(tempArticals);
         return responseResult;
     }
 
     @PostMapping("/saveArtical")
-    public R saveArticalWord(@RequestBody Articals articals) {
-        Object data= articalsMapper.selectById(articals.getId());
+    public R saveArticalWord(@RequestBody ArticalQueryDto articalQueryDto) {
+        Object data= articalsMapper.selectById(articalQueryDto.getId());
+        UserWordRecords userWordRecords = new UserWordRecords();
+        userWordRecords.setArticalId(articalQueryDto.getId());
+        userWordRecords.setWords(articalQueryDto.getWords());
+        userWordRecords.setUserId(articalQueryDto.getUserId());
+        userWordRecords.setId(articalQueryDto.getUserWordRecordsId());
+        userWordRecords.setSentences(null);
         if (data == null) {
-            articalsMapper.insert(articals);
+            articalsMapper.insert(articalQueryDto);
         } else {
-            articalsMapper.updateById(articals);
+            articalsMapper.updateById(articalQueryDto);
+        }
+        if (articalQueryDto.getUserWordRecordsId() == null) {
+            userWordRecordsMapper.insert(userWordRecords);
+        } else {
+            userWordRecordsMapper.updateById(userWordRecords);
         }
         R responseResult = R.ok();
         return responseResult;

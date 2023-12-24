@@ -15,11 +15,11 @@
       <jdbc-url>jdbc:mysql://localhost:3090/test</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="db_admin@18.234.73.46" uuid="3bbe75d2-a4da-4ab7-82b7-f306ec0e9761">
+    <data-source source="LOCAL" name="db_admin@54.172.113.99" uuid="3bbe75d2-a4da-4ab7-82b7-f306ec0e9761">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://18.234.73.46:3090/db_admin</jdbc-url>
+      <jdbc-url>jdbc:mysql://54.172.113.99:3090/db_admin</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
